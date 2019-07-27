@@ -5,7 +5,7 @@ NUM_NODES=2
 
 Vagrant.configure(2) do |config|
 
-    config.vm.box = "ubuntu/bionic64"
+    config.vm.box = "generic/ubuntu1804"
 
     # using cache for apt
     if Vagrant.has_plugin?("vagrant-cachier")
@@ -21,7 +21,7 @@ Vagrant.configure(2) do |config|
     config.vm.define "k8smaster" do |master|
       master.vm.hostname = "k8smaster"
       master.vm.network "private_network", ip: "192.168.7.10"
-      config.vm.provider :virtualbox do |vb|
+      config.vm.provider :hyperv do |vb|
          vb.customize ["modifyvm", :id, "--memory", "2048"]
          vb.customize ["modifyvm", :id, "--cpus", "2"]
       end
@@ -41,7 +41,7 @@ Vagrant.configure(2) do |config|
             counter = 10 + node_number 
             node_ip = "192.168.7.#{counter}"
             node.vm.network "private_network", ip: node_ip
-            config.vm.provider :virtualbox do |vb|
+            config.vm.provider :hyperv do |vb|
                vb.customize ["modifyvm", :id, "--memory", "1024"]
                vb.customize ["modifyvm", :id, "--cpus", "2"]
             end
